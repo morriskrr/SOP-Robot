@@ -153,12 +153,10 @@ class FaceRecognition(Node):
                     return
 
                 # crop 48x48 grayscale face out of original frame
-                ret = self.crop_face_image(frame, face_coords, padding=4)
-                if ret is None:
+                face = self.crop_face_image(frame, face_coords, padding=4)
+                if face is None:
                     #self.logger.error(f"[*] Failed to crop face image, frame {self.frame_count} lost")
                     return
-                
-                face, face_coords = ret
 
                 try:
                     image_msg = self.cv_bridge.cv2_to_imgmsg(face)
@@ -214,7 +212,6 @@ class FaceRecognition(Node):
                 y -= padding
                 h += padding
                 w += padding
-                face_coords = [x,y,w,h]
 
         # convert image to grayscale
         cv2_gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
@@ -231,7 +228,7 @@ class FaceRecognition(Node):
             #print(str(e))
             return None
         else:
-            return face, face_coords
+            return face
 
 
     @staticmethod

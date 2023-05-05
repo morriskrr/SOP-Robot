@@ -210,7 +210,7 @@ class MainActionClient(Node):
             self.logger.fatal("[*] Failed to start emotion node!")
             sys.exit(1)
         else:
-            self.logger.fatal("[*] started emotion node!")
+            self.logger.info("Started emotion node!")
 
         # start timer in face_recogniton node
         timer_future = self.timer_client.call_async(self.start_timer_req)
@@ -220,7 +220,7 @@ class MainActionClient(Node):
             self.logger.fatal("[*] Failed to restart timer!")
             sys.exit(1)
         else:
-            self.logger.fatal("[*] Timer restarted!")
+            self.logger.info("Timer restarted!")
 
 
 
@@ -245,6 +245,7 @@ def main(args=None):
         action_client = MainActionClient()
         if executor.add_node(action_client) == False:
             action_client.logger.fatal("[*] Failed to add a node to the executor")
+            sys.exit(1)
 
         try:
             # fetch and execute new callbacks asynchronously
