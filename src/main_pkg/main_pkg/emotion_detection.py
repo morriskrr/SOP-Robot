@@ -30,8 +30,6 @@ from sensor_msgs.msg import Image
 
 
 
-
-
 class EmotionDetection(Node):
 
     def	__init__(self):
