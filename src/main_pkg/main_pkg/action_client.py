@@ -117,7 +117,6 @@ class MainActionClient(Node):
             # Turn off the timer in face_recognition node
             timer_future = self.timer_client.call_async(self.stop_timer_req)
 
-            # TODO voit poistaa kaikki await call_async() future, ne hidastaa vain 
             # check if timer was successfully turned off
             timer_result = await timer_future
             if timer_result.success == True:
@@ -125,7 +124,7 @@ class MainActionClient(Node):
             else:
                 self.logger.info("Failed to close timer")
         
-            # TODO aloita task missä myös robotti puhuu niin async jutut ei ole aivan turhia!
+            # start send_goal() task
             send_goal_task = aio.create_task(self.send_goal(emotion))
             self.background_tasks.append(send_goal_task)
 
