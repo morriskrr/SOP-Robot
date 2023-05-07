@@ -45,7 +45,6 @@ class FaceRecognition(Node):
         # load Yunet model 
         package = os.path.realpath(__file__).split(os.sep)[-6] # get name of this package
         yunetPath = os.path.join(get_package_share_directory(package) + "/models/face_detection_yunet_2022mar.onnx")
-    
         self.YUNET_model = YuNet(
             modelPath=yunetPath,
             inputSize=[320, 320],
@@ -133,7 +132,7 @@ class FaceRecognition(Node):
             self.logger.error("[*] something went wrong, restarting webcam..")
             # close and try reopening webcam 
             self.close_webcam()
-            self.cap = cv2.VideoCapture(0)
+            self.open_webcam()
 
         else:
             self.frame_count += 1	
@@ -220,10 +219,8 @@ class FaceRecognition(Node):
         try:
             # crop ROI from the grayscale image
             face = cv2_gray_img[y:y+h, x:x+w]
-
             # resize image to 48x48 (try cv2.INTER_AREA for better results but slower)
             face = cv2.resize(face, (48, 48), interpolation=cv2.INTER_NEAREST)
-
         except Exception as e:
             #print(str(e))
             return None
