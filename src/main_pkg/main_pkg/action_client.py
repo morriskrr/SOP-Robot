@@ -42,8 +42,7 @@ class MainActionClient(Node):
 
         self.cb_group1 = ReentrantCallbackGroup()
 
-
-        # action message constants
+        # action message constantsgit
         self.duration = Duration(sec=1,nanosec=0)
         self.head_joints = [
             'head_pan_joint', 
@@ -57,8 +56,8 @@ class MainActionClient(Node):
             "Original": [0.0, 0.0, 0.0, 0.0],
             "Happy": [0.5, 0.0, 0.0, 0.0], 		# look right
             "Angry":[-0.5, 0.0, 0.0, 0.0], 		# look left
-            "Sad": [0.0, 0.0, 0.0, -0.5], 		# look down
-            "Surprised": [0.0, 0.0, 0.5, 0.0]	# tilt to side
+            "Sad": [0.0, 0.0, 0.0, -0.2], 		# look down
+            "Surprised": [0.0, -0.5, 0.5, 0.0]	# tilt to side
         }
 
         # control robot movements
