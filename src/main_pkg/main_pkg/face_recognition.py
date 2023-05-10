@@ -212,20 +212,20 @@ class FaceRecognition(Node):
                 h += padding
                 w += padding
 
-        # convert image to grayscale
-        cv2_gray_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
-        #cv2_gray_img = cv2.equalizeHist(cv2_gray_img)
+        # crop ROI from the webcam image
+        face = original_img[y:y+h, x:x+w]
 
         try:
-            # crop ROI from the grayscale image
-            face = cv2_gray_img[y:y+h, x:x+w]
+            # convert image to grayscale
+            face_gray = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+            #cv2_gray_img = cv2.equalizeHist(face_gray)
             # resize image to 48x48 (try cv2.INTER_AREA for better results but slower)
-            face = cv2.resize(face, (48, 48), interpolation=cv2.INTER_NEAREST)
+            face_gray = cv2.resize(face_gray, (48, 48), interpolation=cv2.INTER_NEAREST)
         except Exception as e:
             #print(str(e))
             return None
         else:
-            return face
+            return face_gray
 
 
     @staticmethod

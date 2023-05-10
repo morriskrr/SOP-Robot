@@ -107,9 +107,7 @@ class EmotionDetection(Node):
         Callback function that runs inference on received image to
         detect emotion.
         '''
-        #self.logger.warning("[*] step 1. emotion_callback called!")
 
-        # handle excess callbacks this way?
         if self.sending_emotion == True:
             #self.logger.info("EXIT before running inference")
             return
@@ -158,8 +156,6 @@ class EmotionDetection(Node):
         while not self.action_client.wait_for_service(timeout_sec=0.5):
             self.logger.info("detected_emotion service not available, waiting again...")
 
-        #self.logger.warning("[*] step 2. emotion_callback BEFORE await")
-
         # send emotion to robot_action_client
         self.action_req.string_value = self.emotion # build request message
         future = self.action_client.call_async(self.action_req)
@@ -172,7 +168,6 @@ class EmotionDetection(Node):
             self.logger.info("emotion declined!")
             self.sending_emotion = False	
 
-        #self.logger.warning("[*] step 3. emotion_callback AFTER await")
 
 
     @staticmethod

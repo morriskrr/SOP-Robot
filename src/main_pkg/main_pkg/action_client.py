@@ -100,8 +100,7 @@ class MainActionClient(Node):
         1.) Sends action goal to action server.
         2.) Stop timer in face_recogniton node
         '''
-        #self.logger.warning("[*] emotion_callback called!")
-
+        
         # get the received emotion from received message 
         emotion = request.string_value
         #self.logger.info(f"received emotion: {emotion}")		
