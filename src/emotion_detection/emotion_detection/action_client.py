@@ -98,7 +98,7 @@ class MainActionClient(Node):
         '''
         This callback is called when emotion is received.
         1.) Sends action goal to action server.
-        2.) Stop timer in face_recogniton node
+        2.) Stop timer in face_detection node
         '''
         
         # get the received emotion from received message 
@@ -112,7 +112,7 @@ class MainActionClient(Node):
             self.should_reset = True
             response.bool_value = True
 
-            # Turn off the timer in face_recognition node
+            # Turn off the timer in face_detection node
             timer_future = self.timer_client.call_async(self.stop_timer_req)
 
             # check if timer was successfully turned off
@@ -205,7 +205,7 @@ class MainActionClient(Node):
         else:
             self.logger.info("Started emotion node!")
 
-        # start timer in face_recogniton node
+        # start timer in face_detection node
         timer_future = self.timer_client.call_async(self.start_timer_req)
         timer_result = await timer_future
         # make sure the timer has been started

@@ -14,9 +14,9 @@ def generate_launch_description():
     launch_description = LaunchDescription()
 
 
-    face_recognition_node = Node(
+    face_detection_node = Node(
         package=package_name,
-        executable="face_recognition",
+        executable="face_detection",
     )
 
     emotion_detection_node = Node(
@@ -33,7 +33,7 @@ def generate_launch_description():
     )
 
 
-    launch_description.add_action(face_recognition_node)
+    launch_description.add_action(face_detection_node)
     launch_description.add_action(emotion_detection_node)
     launch_description.add_action(action_client_node)
 

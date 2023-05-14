@@ -30,7 +30,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'face_recognition = ' + package_name + '.face_recognition:main',
+            'face_detection = ' + package_name + '.face_detection:main',
             'emotion_detection = ' + package_name + '.emotion_detection:main',
             'action_client = ' + package_name + '.action_client:main',
         ],

@@ -58,7 +58,7 @@ class EmotionDetection(Node):
             os.path.join(get_package_share_directory(package) + "/models/fer_2013.h5")
         )
 
-        # subscriber receiving face images from face_recgonition node
+        # subscriber receiving face images from face_detection node
         self._face_img_subscription = self.create_subscription(
             Image, 						  	# message type
             "face_img", 				  	# topic
@@ -159,7 +159,7 @@ class EmotionDetection(Node):
         # send emotion to robot_action_client
         self.action_req.string_value = self.emotion # build request message
         future = self.action_client.call_async(self.action_req)
-        result = await future # blocks but doesn't cause deadlock because multithreaded
+        result = await future
         #print(f"emotion boolean: {result.bool_value}")
 
         # check if emotion was in the accepted list
@@ -167,7 +167,6 @@ class EmotionDetection(Node):
         if result.bool_value == False:
             self.logger.info("emotion declined!")
             self.sending_emotion = False	
-
 
 
     @staticmethod
@@ -198,7 +197,7 @@ def main(args=None):
         try:
             while rclpy.ok():
                 # fetch and execute new callbacks
-                executor.spin_once(timeout_sec=0.1)
+                executor.spin_once()
 
         except KeyboardInterrupt:
             emotion_detection.logger.info("CTRL + C, exiting...")

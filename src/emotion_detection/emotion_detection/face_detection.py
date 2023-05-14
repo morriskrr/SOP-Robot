@@ -28,7 +28,7 @@ class WebcamError(Exception):
 
 
 
-class FaceRecognition(Node):
+class FaceDetection(Node):
 
     def __init__(self):
         super().__init__("face_recognition")
@@ -253,9 +253,9 @@ def main(args=None):
     try:
         executor = SingleThreadedExecutor()
 
-        face_recognition = FaceRecognition()
-        if executor.add_node(face_recognition) == False:
-            face_recognition.get_logger().fatal("[*] Failed to add a node to the executor")
+        face_detection = FaceDetection()
+        if executor.add_node(face_detection) == False:
+            face_detection.get_logger().fatal("[*] Failed to add a node to the executor")
             sys.exit(1)
 
         try:
@@ -264,12 +264,12 @@ def main(args=None):
                 executor.spin_once()
 
         except KeyboardInterrupt:
-            face_recognition.get_logger().info("exiting...")
+            face_detection.get_logger().info("exiting...")
 
         finally:
             # unnecessary kinda
             executor.shutdown(timeout_sec=1)	
-            face_recognition.destroy_node()
+            face_detection.destroy_node()
 
     except Exception as e:
         print(str(e))
