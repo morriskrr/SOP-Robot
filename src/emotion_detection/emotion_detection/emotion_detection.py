@@ -18,7 +18,6 @@ import rclpy
 from rclpy.node import Node 
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup, ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.exceptions import ParameterNotDeclaredException
 from cv_bridge import CvBridge, CvBridgeError
 from ament_index_python.packages import get_package_share_directory
 
@@ -39,11 +38,11 @@ class EmotionDetection(Node):
 
         self.cv_bridge = CvBridge()
         # circular buffer 
-        self._buffsize = 3
-        self.predicted_emotions = deque([], maxlen=self._buffsize) 
+        self._buffersize = 3
+        self.predicted_emotions = deque([], maxlen=self._buffersize) 
 
-        self.emotions = ("Angry", "Disgust", "Fear", "Happy",
-                            "Sad", "Surprised", "Neutral")
+        self.emotions = ("Angry", "Fear", "Happy",
+                            "Neutral", "Sad", "Surprised")
         self.emotion = None
         self.sending_emotion = False
         self.emotion_buffer_lock = Lock()		
@@ -55,7 +54,7 @@ class EmotionDetection(Node):
         # load keras model 
         package = os.path.realpath(__file__).split(os.sep)[-6] # get name of this package
         self.FER_model = load_model(
-            os.path.join(get_package_share_directory(package) + "/models/fer_2013.h5")
+            os.path.join(get_package_share_directory(package) + "/models/fer2013_new.h5")
         )
 
         # subscriber receiving face images from face_detection node
@@ -121,10 +120,9 @@ class EmotionDetection(Node):
         
         # run the inference
         pixels = img_to_array(cv_img)
-        pixels = np.expand_dims(pixels, axis=0)
+        pixels = np.expand_dims(pixels/255, axis=0)
         predictions = self.FER_model.predict(pixels, verbose=0)
         index = np.argmax(predictions[0])
-
 
         # allow only 1 thread at a time to modify the circular buffer
         with self.emotion_buffer_lock:
@@ -138,7 +136,7 @@ class EmotionDetection(Node):
 
             # check that all (3) emotions in the buffer are the same to proceed
             if (self.all_elements_are_equal(self.predicted_emotions) and 
-                len(self.predicted_emotions) >= self._buffsize and 
+                len(self.predicted_emotions) >= self._buffersize and 
                 not self.sending_emotion
             ):
                 self.logger.info(f"predicted emotion: {self.emotions[index]}")

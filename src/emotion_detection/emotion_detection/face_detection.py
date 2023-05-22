@@ -9,7 +9,6 @@ import os
 import rclpy 
 from rclpy.node import Node 
 from rclpy.executors import SingleThreadedExecutor
-from rclpy.exceptions import ParameterNotDeclaredException
 from cv_bridge import CvBridge, CvBridgeError
 from ament_index_python.packages import get_package_share_directory
 
@@ -31,9 +30,9 @@ class WebcamError(Exception):
 class FaceDetection(Node):
 
     def __init__(self):
-        super().__init__("face_recognition")
+        super().__init__("face_detection")
         self.logger = self.get_logger()
-        self.logger.info("[*] Initializing face_recognition node...")
+        self.logger.info("[*] Initializing face_detection node...")
 
         self.frame_count = 0
         self.cv_bridge = CvBridge()
@@ -83,7 +82,7 @@ class FaceDetection(Node):
             self.timer_control_callback, 	# callback function
         )
 
-        self.logger.info("[*] Initializing face_recognition node DONE!")
+        self.logger.info("[*] Initializing face_detection node DONE!")
 
 
 
